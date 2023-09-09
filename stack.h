@@ -1,19 +1,21 @@
 #ifndef STACK_H
 #define STACK_H
 
-const int MaxElements = 52;
+#include "Baralho.h"
+
 class Stack
 {
 private:
-    int top;
-    int Entry[MaxElements];
+    int count = 0;
 
 public:
-    Stack();
+    Carta Entry[TotalCartas],
+        TopColumn[K];
+    Stack() = default;
     ~Stack() = default;
-    void Push(int x);
-    void Pop(int &x);
-    void Top(int &x);
-    bool Empty();
+    void IniciarPilha(Carta &x);
+    void MoverCarta(int p_esta, int p_vai);
+    bool Hierarquia(int p_esta, int p_vai);
 };
-#endif
+
+#endif // STACK_H

@@ -6,7 +6,7 @@ using namespace std;
 
 Baralho::Baralho()
 {
-    Ordem valor[13] = {AS,
+    Ordem valor[13] = {A,
                        DOIS,
                        TRES,
                        QUATRO,
@@ -16,16 +16,16 @@ Baralho::Baralho()
                        OITO,
                        NOVE,
                        DEZ,
-                       VALETE,
-                       DAMA,
-                       REI};
-    Naipe naipe[4] = {OUROS,
-                      ESPADAS,
-                      COPAS,
-                      PAUS};
+                       J,
+                       Q,
+                       K};
+    Naipe naipe[4] = {U,
+                      E,
+                      C,
+                      P};
     for (int i = 0; i < 4; i++)
     {
-        int count = i * REI;
+        int count = i * 13;
         for (int j = 0; j < 13; j++)
         {
             BaralhoCompleto[j + count].valor = valor[j];
@@ -39,12 +39,9 @@ void Baralho::Embaralhar()
     Carta temp;
     for (int i = 0; i < TotalCartas; i++)
     {
-        int j = rand() % 52;
+        int j = rand() % TotalCartas;
         temp = BaralhoCompleto[i];
         BaralhoCompleto[i] = BaralhoCompleto[j];
         BaralhoCompleto[j] = temp;
     }
-}
-void Baralho::Ordenar()
-{
 }

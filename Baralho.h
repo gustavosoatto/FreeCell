@@ -4,8 +4,8 @@
 const int TotalCartas = 52;
 enum Ordem
 {
-    AS = 1,
-    DOIS,
+    A = 65,
+    DOIS = 2,
     TRES,
     QUATRO,
     CINCO,
@@ -14,33 +14,31 @@ enum Ordem
     OITO,
     NOVE,
     DEZ,
-    VALETE,
-    DAMA,
-    REI
+    J = 74,
+    Q = 81,
+    K = 75
 };
 enum Naipe
 {
-    OUROS,
-    ESPADAS,
-    COPAS,
-    PAUS
+    C = 3,
+    U,
+    P,
+    E
+};
+struct Carta
+{
+    Ordem valor;
+    Naipe naipe;
 };
 
 class Baralho
 {
 private:
-    struct Carta
-    {
-        Ordem valor;
-        Naipe naipe;
-    };
-
 public:
     Carta BaralhoCompleto[TotalCartas];
     Baralho();
     ~Baralho() = default;
     void Embaralhar();
-    void Ordenar();
 };
 
-#endif
+#endif // BARALHO_H

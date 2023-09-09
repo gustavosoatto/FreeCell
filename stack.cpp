@@ -1,52 +1,36 @@
 #include "stack.h"
+#include "Baralho.h"
 #include <iostream>
 using namespace std;
 
-Stack::Stack(){
-    top = 0;
+void Stack::IniciarPilha(Carta &x)
+{
+    Entry[count] = x;
+    if (count < 7)
+        TopColumn[1] = Entry[count];
+    else if (count < 14)
+        TopColumn[2] = Entry[count];
+    else if (count < 21)
+        TopColumn[3] = Entry[count];
+    else if (count < 28)
+        TopColumn[4] = Entry[count];
+    else if (count < 34)
+        TopColumn[5] = Entry[count];
+    else if (count < 40)
+        TopColumn[6] = Entry[count];
+    else if (count < 46)
+        TopColumn[7] = Entry[count];
+    else if (count < 52)
+        TopColumn[8] = Entry[count];
+    count++;
 }
-
-Stack::~Stack(){
-    cout << "Pilha destruida" << endl;
+void Stack::MoverCarta(int p_esta, int p_vai)
+{
 }
-
-bool Stack::Full(){
-    return top == (MaxElements - 1);
+bool Stack::Hierarquia(int p_esta, int p_vai)
+{
+    if (TopColumn[p_esta].naipe % 2 == TopColumn[p_vai].naipe % 2)
+        return false;
+    else
+        return true;
 }
-
-bool Stack::Empty(){
-    return top == 0;
-}
-void Stack::Push(int x){
-    if (!Full())
-    {
-        top++;
-        Entry[top] = x;
-    }else
-    {
-        cout << "Pilha cheia" << endl;
-        return;
-    }
-}
-
-void Stack::Pop(int &x){
-    if (!Empty())
-    {   
-        x = Entry[top];
-        top--;
-    }else{
-        cout << "Pilha vazia" << endl;
-        return;
-    }
-}
-
-void Stack::Top(int &x){
-    if (top == 0){ //Não tem necessidade de chamar a função Empty() pela optimização
-        cout << "Pilha vazia" << endl;
-        return;
-    }
-    else{
-        x = Entry[top];
-    }
-}
-    
