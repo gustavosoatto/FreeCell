@@ -1,4 +1,4 @@
-#include "../Baralho.h"
+#include "T_Baralho.h"
 #include <iostream>
 using namespace std;
 

@@ -1,6 +1,6 @@
 #ifndef FREECELL_H
 #define FREECELL_H
-#include "Baralho.h"
+#include "T_Baralho.h"
 
 class FreeCell
 {
@@ -9,15 +9,14 @@ private:
     Carta Entry[TotalCartas],
         TopColumn[13];
 
-    void IniciarPilha(Carta &x);
-    void ExibirMesa(FreeCell &jogo);
-    bool Hierarquia(int p_esta, int p_vai);
-
 public:
     FreeCell() = default;
     ~FreeCell() = default;
+    void IniciarPilha(Carta &x);
     void Mesa();
-    void MoverCarta(int &p_esta, int &p_vai);
+    void MoverCarta(int p_esta, int p_vai);
+    bool Hierarquia(int p_esta, int p_vai);
+    void ExibirMesa();
 };
 
 #endif // FREECELL_H
