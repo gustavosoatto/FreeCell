@@ -1,10 +1,10 @@
 #ifndef BARALHO_H
 #define BARALHO_H
 
-const int TotalCartas = 52;
+const int TotalCartas = 152;
 enum Ordem
 {
-    A = 65,
+    AS = 65,
     DOIS = 2,
     TRES = 3,
     QUATRO = 4,
@@ -20,21 +20,18 @@ enum Ordem
 };
 enum Naipe
 {
-    C = 3,
-    U,
-    P,
-    E
-};
-struct Posicao
-{
-    int linha;
-    int coluna;
+    VAZIO = 0,
+    COPAS = 3,
+    OUROS,
+    PAUS,
+    ESPADAS
 };
 struct Carta
 {
     Ordem valor;
     Naipe naipe;
-    Posicao posicao;
+    int linha;
+    int coluna;
 };
 
 class Baralho

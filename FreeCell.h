@@ -7,10 +7,10 @@ class FreeCell
 private:
     int count = 0;
     Carta Entry[TotalCartas],
-        TopColumn[13];
+        *TopColumn[13];
 
-    void IniciarPilha(Carta &x);
-    void ExibirMesa(FreeCell &jogo);
+    void IniciarPilha(Carta &x); // Inicializa as 8 pilhas de jogo e as FreeCells
+    void ExibirMesa();
     bool Hierarquia(int p_esta, int p_vai);
 
 public:
