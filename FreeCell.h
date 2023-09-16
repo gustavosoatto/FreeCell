@@ -12,6 +12,8 @@ private:
     void IniciarPilha(Carta &x); // Inicializa as 8 pilhas de jogo e as FreeCells
     void ExibirMesa();
     bool Hierarquia(int p_esta, int p_vai);
+    void MoverEntreColuna(int &p_esta, int &p_vai);
+    void MoverFreeCell(int &p_esta, int &p_vai);
 
 public:
     FreeCell() = default;
