@@ -1,7 +1,7 @@
 #ifndef BARALHO_H
 #define BARALHO_H
 
-const int TotalCartas = 152;
+const int TotalCartas = 156;
 enum Ordem
 {
     AS = 65,

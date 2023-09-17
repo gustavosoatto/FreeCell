@@ -33,7 +33,7 @@ Baralho::Baralho()
             BaralhoCompleto[j + count].naipe = naipe[i];
         }
     }
-    for (int i = 52; i < 152; i++)
+    for (int i = 52; i < TotalCartas; i++)
         BaralhoCompleto[i].naipe = VAZIO;
 }
 void Baralho::Embaralhar()

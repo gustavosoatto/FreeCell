@@ -14,12 +14,14 @@ private:
     bool Hierarquia(int p_esta, int p_vai);
     void MoverEntreColuna(int &p_esta, int &p_vai);
     void MoverFreeCell(int &p_esta, int &p_vai);
+    bool HierarquiaSaida(int p_esta, int p_vai);
+    void MoverSaida(int &p_esta, int &p_vai);
+    void MoverCarta(int &p_esta, int &p_vai);
 
 public:
     FreeCell() = default;
     ~FreeCell() = default;
     void Mesa();
-    void MoverCarta(int &p_esta, int &p_vai);
 };
 
 #endif // FREECELL_H

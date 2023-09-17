@@ -4,5 +4,6 @@
     "ostream": "cpp",
     "new": "cpp",
     "iostream": "cpp"
-  }
+  },
+  "C_Cpp.loggingLevel": "Debug"
 }
