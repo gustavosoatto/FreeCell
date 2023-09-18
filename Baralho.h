@@ -1,8 +1,8 @@
 #ifndef BARALHO_H
 #define BARALHO_H
 
-const int TotalCartas = 156;
-enum Ordem
+const int TotalCartas = 156; // Define o número total de cartas do baralho
+enum Ordem                   // Representa os valores das cartas
 {
     AS = 65,
     DOIS = 2,
@@ -18,7 +18,7 @@ enum Ordem
     Q = 81,
     K = 75
 };
-enum Naipe
+enum Naipe // Representa os naipes das cartas
 {
     VAZIO = 0,
     COPAS = 3,
@@ -26,7 +26,7 @@ enum Naipe
     PAUS,
     ESPADAS
 };
-struct Carta
+struct Carta // Estrutura para representar uma carta
 {
     Ordem valor;
     Naipe naipe;
@@ -38,10 +38,10 @@ class Baralho
 {
 private:
 public:
-    Carta BaralhoCompleto[TotalCartas];
-    Baralho();
-    ~Baralho() = default;
-    void Embaralhar();
+    Carta BaralhoCompleto[TotalCartas]; // Vetor de cartas representando um baralho completo
+    Baralho();                          // Construtor da classe Baralho
+    ~Baralho() = default;               // Destrutor padrão
+    void Embaralhar();                  // Método para embaralhar as cartas do baralho
 };
 
 #endif // BARALHO_H

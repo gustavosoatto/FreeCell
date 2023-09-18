@@ -115,7 +115,7 @@ void FreeCell::IniciarPilha(Carta &x)
 }
 void FreeCell::ExibirMesa()
 {
-    for (int k = 9; k < 17; k++)
+    for (int k = 9; k < 17; k++) // Exibe o conteúdo das freecells e pilhas de saída
     {
         for (int i = 0; i < TotalCartas; i++)
         {
@@ -140,7 +140,7 @@ void FreeCell::ExibirMesa()
         }
     }
     cout << endl;
-    for (int j = 9; j < 17; j++)
+    for (int j = 9; j < 17; j++) // Exibe o valor que representa a coluna
     {
         if (j == 9)
             cout << " [ " << j << " ]  ";
@@ -151,7 +151,8 @@ void FreeCell::ExibirMesa()
     }
     cout << endl
          << endl;
-    for (int j = 1; j < 20; j++)
+
+    for (int j = 1; j < 20; j++) // Exibe as cartas da mesa
     {
         for (int k = 1; k < 9; k++)
         {
@@ -177,7 +178,7 @@ void FreeCell::ExibirMesa()
         cout << endl;
     }
     cout << "===============================================================" << endl;
-    for (int j = 1; j < 9; j++)
+    for (int j = 1; j < 9; j++) // Exibe o valor que representa a coluna
         cout << " [ " << j << " ]  ";
     cout << endl;
 }
@@ -185,12 +186,13 @@ bool FreeCell::Hierarquia(int p_esta, int p_vai)
 {
     if ((TopColumn[p_vai]->naipe == VAZIO))
         return true;
-    if ((TopColumn[p_esta]->naipe < 5) == (TopColumn[p_vai]->naipe < 5))
+    if ((TopColumn[p_esta]->naipe < 5) == (TopColumn[p_vai]->naipe < 5)) // Verifica se o naipe é de cor diferente
     {
         cout << "Naipe incompativel: utilize uma carta com um Naipe de cor diferente!" << endl;
         return false;
     }
 
+    // Converte os valores especiais das cartas (AS, J, Q, K) em valores numéricos correspondentes
     p_esta = TopColumn[p_esta]->valor;
     p_vai = TopColumn[p_vai]->valor;
     if (p_esta == AS)
@@ -219,10 +221,11 @@ bool FreeCell::Hierarquia(int p_esta, int p_vai)
 }
 void FreeCell::MoverEntreColuna(int &p_esta, int &p_vai)
 {
+    cout << "Carta da coluna [ " << TopColumn[p_esta]->coluna << " ] movida para [ " << TopColumn[p_vai]->coluna << " ]!" << endl;
     int l_vai, l_esta;
     l_vai = TopColumn[p_vai]->linha + 1;
     l_esta = TopColumn[p_esta]->linha - 1;
-    if (TopColumn[p_vai]->naipe == VAZIO)
+    if (TopColumn[p_vai]->naipe == VAZIO) // Garante que não iremos pular linhas em colunas vazias
         l_vai--;
     for (int i = 0; i < TotalCartas; i++)
         if ((Entry[i].coluna == p_vai) && (Entry[i].linha == l_vai))
@@ -233,19 +236,21 @@ void FreeCell::MoverEntreColuna(int &p_esta, int &p_vai)
     TopColumn[p_esta]->linha = l_vai;
     TopColumn[p_esta]->coluna = p_vai;
     TopColumn[p_vai] = TopColumn[p_esta];
-    if (l_esta < 1)
+    if (l_esta < 1) // Garante que o topo de uma coluna vazia não aponde para outra
         l_esta = 1;
     for (int i = 0; i < TotalCartas; i++)
         if ((Entry[i].coluna == p_esta) && (Entry[i].linha == l_esta))
             TopColumn[p_esta] = &Entry[i];
 }
+bool FreeCell::CartaFreecell(int &position)
+{
+    return (position > 8 && position < 13); // Verifica se a variável usa alguma coluna de freecell
+}
 void FreeCell::MoverFreeCell(int &p_esta, int &p_vai)
 {
-    if (TopColumn[p_esta]->naipe == VAZIO)
-        cout << "FreeCell vazia: tente colocar uma Carta nessa posicao!" << endl;
-    else if ((p_vai > 8 && p_vai < 13) && (TopColumn[p_vai]->naipe != VAZIO))
+    if (CartaFreecell(p_vai) && (TopColumn[p_vai]->naipe != VAZIO))
         cout << "Posicao ocupada: tente mover para uma posicao vazia" << endl;
-    else if (TopColumn[p_vai]->naipe == VAZIO)
+    else if (TopColumn[p_vai]->naipe == VAZIO) // Caso enviamos uma carta para uma posição VAZIA (coluna de freecell ou jogo)
     {
         int l_esta = TopColumn[p_esta]->linha - 1;
         for (int i = 0; i < TotalCartas; i++)
@@ -257,13 +262,13 @@ void FreeCell::MoverFreeCell(int &p_esta, int &p_vai)
         TopColumn[p_esta]->linha = 1;
         TopColumn[p_esta]->coluna = p_vai;
         TopColumn[p_vai] = TopColumn[p_esta];
-        if (l_esta < 1)
+        if (l_esta < 1) // Garante que o topo de uma coluna vazia não aponde para outra
             l_esta = 1;
         for (int i = 0; i < TotalCartas; i++)
             if ((Entry[i].coluna == p_esta) && (Entry[i].linha == l_esta))
                 TopColumn[p_esta] = &Entry[i];
     }
-    else if (TopColumn[p_vai]->naipe != VAZIO)
+    else if (TopColumn[p_vai]->naipe != VAZIO) // Caso enviamos a carta para uma pilha de cartas
     {
         int l_vai = TopColumn[p_vai]->linha + 1;
         for (int i = 0; i < TotalCartas; i++)
@@ -279,25 +284,22 @@ void FreeCell::MoverFreeCell(int &p_esta, int &p_vai)
             if (Entry[i].coluna == p_esta)
                 TopColumn[p_esta] = &Entry[i];
     }
-    else
-        cout << "EIIIIITAAA";
+    if (CartaFreecell(p_esta))
+        cout << "Carta movida da FreeCell!" << endl;
+    if (CartaFreecell(p_vai))
+        cout << "Carta movida para FreeCell!" << endl;
 }
 bool FreeCell::HierarquiaSaida(int p_esta, int p_vai)
 {
-    if (TopColumn[p_esta]->naipe == COPAS)
+    if (TopColumn[p_esta]->naipe == COPAS) // Verifica a qual naipe a carta de origem pretence
     {
-        TopColumn[p_vai] = &Entry[154];
+        TopColumn[p_vai] = &Entry[154]; // Ajusta o ponteiro TopColumn[0] para a coluna de saida
         if ((TopColumn[p_esta]->valor == AS) && (Entry[154].naipe == VAZIO))
-        {
-            cout << "AS -> 0" << endl;
             return true;
-        }
         else
         {
             p_esta = TopColumn[p_esta]->valor;
             p_vai = Entry[154].valor;
-            cout << "Carta -> Carta" << endl;
-            cout << p_vai << endl;
             if (p_esta == AS)
                 p_esta = 1;
             if (p_vai == AS)
@@ -323,20 +325,15 @@ bool FreeCell::HierarquiaSaida(int p_esta, int p_vai)
             }
         }
     }
-    else if (TopColumn[p_esta]->naipe == OUROS)
+    else if (TopColumn[p_esta]->naipe == OUROS) // Verifica a qual naipe a carta de origem pretence
     {
-        TopColumn[p_vai] = &Entry[152];
+        TopColumn[p_vai] = &Entry[152]; // Ajusta o ponteiro TopColumn[0] para a coluna de saida
         if ((TopColumn[p_esta]->valor == AS) && (Entry[152].naipe == VAZIO))
-        {
-            cout << "AS -> 0" << endl;
             return true;
-        }
         else
         {
             p_esta = TopColumn[p_esta]->valor;
             p_vai = Entry[152].valor;
-            cout << "Carta -> Carta" << endl;
-            cout << p_vai << endl;
             if (p_esta == AS)
                 p_esta = 1;
             if (p_vai == AS)
@@ -362,20 +359,15 @@ bool FreeCell::HierarquiaSaida(int p_esta, int p_vai)
             }
         }
     }
-    else if (TopColumn[p_esta]->naipe == PAUS)
+    else if (TopColumn[p_esta]->naipe == PAUS) // Verifica a qual naipe a carta de origem pretence
     {
-        TopColumn[p_vai] = &Entry[155];
+        TopColumn[p_vai] = &Entry[155]; // Ajusta o ponteiro TopColumn[0] para a coluna de saida
         if ((TopColumn[p_esta]->valor == AS) && (Entry[155].naipe == VAZIO))
-        {
-            cout << "AS -> 0" << endl;
             return true;
-        }
         else
         {
             p_esta = TopColumn[p_esta]->valor;
             p_vai = Entry[155].valor;
-            cout << "Carta -> Carta" << endl;
-            cout << p_vai << endl;
             if (p_esta == AS)
                 p_esta = 1;
             if (p_vai == AS)
@@ -401,20 +393,15 @@ bool FreeCell::HierarquiaSaida(int p_esta, int p_vai)
             }
         }
     }
-    else if (TopColumn[p_esta]->naipe == ESPADAS)
+    else if (TopColumn[p_esta]->naipe == ESPADAS) // Verifica a qual naipe a carta de origem pretence
     {
-        TopColumn[p_vai] = &Entry[153];
+        TopColumn[p_vai] = &Entry[153]; // Ajusta o ponteiro TopColumn[0] para a coluna de saida
         if ((TopColumn[p_esta]->valor == AS) && (Entry[153].naipe == VAZIO))
-        {
-            cout << "AS -> 0" << endl;
             return true;
-        }
         else
         {
             p_esta = TopColumn[p_esta]->valor;
             p_vai = Entry[153].valor;
-            cout << "Carta -> Carta" << endl;
-            cout << p_vai << endl;
             if (p_esta == AS)
                 p_esta = 1;
             if (p_vai == AS)
@@ -440,65 +427,11 @@ bool FreeCell::HierarquiaSaida(int p_esta, int p_vai)
             }
         }
     }
-    cout << "NAO ACHEI" << endl;
     return false;
-
-    // for (int i = 0; i < 4; i++)
-    // {
-    //     cout << "Valor: " << TopColumn[p_vai]->valor << endl
-    //          << "Naipe: " << TopColumn[p_vai]->naipe << endl
-    //          << "Coluna: " << TopColumn[p_vai]->coluna << endl
-    //          << "Linha: " << TopColumn[p_vai]->linha << endl;
-    //     if (TopColumn[p_vai]->naipe == VAZIO && TopColumn[p_esta]->valor == AS)
-    //     {
-    //         cout << "AS -> 0" << endl;
-    //         TopColumn[p_vai] = &Entry[152];
-    //         return true;
-    //     }
-    //     else if (TopColumn[p_vai]->naipe != VAZIO && TopColumn[p_esta]->valor == AS)
-    //     {
-    //         TopColumn[p_vai] = TopColumn[p_vai] + 1;
-    //         cout << "i++;" << endl;
-    //     }
-    //     else if (TopColumn[p_vai]->naipe == TopColumn[p_esta]->naipe)
-    //     {
-    //         p_esta = TopColumn[p_esta]->valor;
-    //         p_vai = TopColumn[p_vai]->valor;
-    //         cout << "Carta -> Carta" << endl;
-    //         cout << p_vai << endl;
-    //         if (p_esta == AS)
-    //             p_esta = 1;
-    //         if (p_vai == AS)
-    //             p_vai = 1;
-    //         if (p_esta == J)
-    //             p_esta = 11;
-    //         if (p_vai == J)
-    //             p_vai = 11;
-    //         if (p_esta == Q)
-    //             p_esta = 12;
-    //         if (p_vai == Q)
-    //             p_vai = 12;
-    //         if (p_esta == K)
-    //             p_esta = 13;
-    //         if (p_vai == K)
-    //             p_vai = 13;
-    //         if (p_esta == p_vai + 1)
-    //         {
-    //             TopColumn[p_vai] = &Entry[152];
-    //             return true;
-    //         }
-    //     }
-    //     else
-    //     {
-    //         TopColumn[p_vai] = TopColumn[p_vai] + 1;
-    //         cout << "i++" << endl;
-    //     }
-    // }
-    // TopColumn[p_vai] = &Entry[152];
-    // return false;
 }
 void FreeCell::MoverSaida(int &p_esta, int &p_vai)
 {
+    cout << "Carta da coluna [ " << p_esta << " ] movida para saida!" << endl;
     int l_esta = TopColumn[p_esta]->linha - 1;
     for (int i = 13; i < 17; i++)
     {
@@ -517,29 +450,34 @@ void FreeCell::MoverSaida(int &p_esta, int &p_vai)
         }
         TopColumn[p_vai] = TopColumn[p_vai] + 1;
     }
-    TopColumn[p_vai] = &Entry[152];
 }
 void FreeCell::MoverCarta(int &p_esta, int &p_vai)
 {
-    if (p_esta < 1 || p_esta > 12 || p_vai < 0 || p_vai > 12)
+    if (p_esta < 1 || p_esta > 12 || p_vai < 0 || p_vai > 12) // Verifica se as colunas especificadas pelo jogador estão dentro dos limites permitidos
     {
-        cout << "Posicao invalida: utilize posicoes entre 0-12!" << endl;
+        cout << "Posicao invalida: tente mover das colunas 1-12 ou enviar para saida 0!" << endl;
         return;
     }
-    else if (p_vai == 0)
+    else if (TopColumn[p_esta]->naipe == VAZIO) // Verifica se o jogador está tentando mover uma célula vazia
+    {
+        cout << "Posicao invalida: essa posicao esta VAZIA!" << endl;
+        return;
+    }
+    else if (p_vai == 0) // Verifica se o jogador quer mover uma carta para uma pilha de saída
         if (HierarquiaSaida(p_esta, p_vai) == true)
             MoverSaida(p_esta, p_vai);
         else
             return;
     else if (Hierarquia(p_esta, p_vai) == false)
         return;
-    else if (p_vai > 8 && p_vai < 13 || p_esta > 8 && p_esta < 13)
+    else if (CartaFreecell(p_vai) || CartaFreecell(p_esta))
         MoverFreeCell(p_esta, p_vai);
     else
         MoverEntreColuna(p_esta, p_vai);
-
-    cout << TopColumn[p_esta]->valor << TopColumn[p_esta]->naipe << " C: " << TopColumn[p_esta]->coluna << " L: " << TopColumn[p_esta]->linha << endl;
-    cout << TopColumn[p_vai]->valor << TopColumn[p_vai]->naipe << " C: " << TopColumn[p_vai]->coluna << " L: " << TopColumn[p_vai]->linha << endl;
+}
+bool FreeCell::Ganhou()
+{
+    return (Entry[152].valor == K && Entry[153].valor == K && Entry[154].valor == K && Entry[155].valor == K);
 }
 // public
 void FreeCell::Mesa()
@@ -547,19 +485,41 @@ void FreeCell::Mesa()
     Baralho baralho;
     FreeCell jogo;
 
+    cout << endl;
+    cout << "      ____________ _____ _____ _____  _____ _      _     " << endl;
+    cout << "      |  ___| ___ \\  ___|  ___/  __ \\|  ___| |    | |    " << endl;
+    cout << "      | |_  | |_/ / |__ | |__ | /  \\/| |__ | |    | |    " << endl;
+    cout << "      |  _| |    /|  __||  __|| |    |  __|| |    | |    " << endl;
+    cout << "      | |   | |\\ \\| |___| |___| \\__/\\| |___| |____| |____" << endl;
+    cout << "      \\_|   \\_| \\_\\____/\\____/ \\____/\\____/\\_____/\\_____/" << endl;
+    cout << endl;
+
+    // Prepara o baralho e a mesa iniciando os valores necessáriso
     baralho.Embaralhar();
     for (int i = 0; i < TotalCartas; i++)
         jogo.IniciarPilha(baralho.BaralhoCompleto[i]);
 
-    char continuar;
     int x, y;
     jogo.ExibirMesa();
-    cout << "Digite a coluna que ira retirar e depois a que ira inserir a carta: " << endl;
-    while (true)
+    while (!Ganhou()) // Verifica a cada movimento se o jogador ganhou
     {
+        cout << "Digite o valor da coluna que ira retirar e depois a que ira inserir a carta: " << endl;
         cin >> x;
         cin >> y;
         jogo.MoverCarta(x, y);
         jogo.ExibirMesa();
     }
+
+    printf("\n");
+    printf("                         ___________\n");
+    printf("                        '._==_==_=_.'\n");
+    printf("                        .-\\:      /-.\n");
+    printf("                       | (|:.     |) |\n");
+    printf("                        '-|:.     |-'\n");
+    printf("                          \\::.    /\n");
+    printf("                           '::. .'\n");
+    printf("                             ) (\n");
+    printf("                           _.' '._\n");
+    printf("                          `\"\"\"\"\"\"\"`\n");
+    printf("\n");
 }
